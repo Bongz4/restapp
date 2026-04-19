@@ -14,8 +14,8 @@ def save_users(users):
 
 # GET all users
 @app.get("/")
-def get_all_users():
-    return load_users()
+def home():
+    return {"message": "CI/CD triggered - updated version"}
 
 # GET user by ID
 @app.get("/user/{uid}")
