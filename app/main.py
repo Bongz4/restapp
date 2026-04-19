@@ -3,21 +3,22 @@ import json
 
 app = FastAPI()
 
-# Load data
+
 def load_users():
     with open("app/user.json") as f:
         return json.load(f)["users"]
+
 
 def save_users(users):
     with open("app/user.json", "w") as f:
         json.dump({"users": users}, f, indent=4)
 
-# GET all users
+
 @app.get("/")
 def home():
     return {"message": "CI/CD triggered - updated version"}
 
-# GET user by ID
+
 @app.get("/user/{uid}")
 def get_user(uid: int):
     users = load_users()
@@ -26,7 +27,7 @@ def get_user(uid: int):
             return user
     raise HTTPException(status_code=404, detail="User not found")
 
-# POST - create user
+
 @app.post("/users")
 def create_user(user: dict):
     users = load_users()
@@ -34,7 +35,7 @@ def create_user(user: dict):
     save_users(users)
     return {"message": "User added"}
 
-# PUT - update user
+
 @app.put("/users/{uid}")
 def update_user(uid: int, updated_user: dict):
     users = load_users()
@@ -45,7 +46,7 @@ def update_user(uid: int, updated_user: dict):
             return {"message": "User updated"}
     raise HTTPException(status_code=404, detail="User not found")
 
-# DELETE user
+
 @app.delete("/users/{uid}")
 def delete_user(uid: int):
     users = load_users()
